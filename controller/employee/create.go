@@ -1,4 +1,4 @@
-package customer
+package employee
 
 import (
 	"errors"
@@ -10,25 +10,22 @@ import (
 
 func Create(c *gin.Context) {
 	db := config.DB
-	query := "INSERT INTO mst_customer (name,phonenumber,address) VALUES ($1,$2,$3) RETURNING id"
-	response := Response{}
-	data := Customer{}
+	data := Employee{}
 	c.ShouldBind(&data)
-	err := ValidateHp(data.PhoneNumber)
+	err := validateLenHp(data.PhoneNumber)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, Response{Message: "Error," + err.Error()})
+		c.JSON(http.StatusBadRequest, Response{Message: "Error," + err.Error(), Data: err})
 		return
 	}
+	query := "INSERT INTO employee (name,phonenumber,address) VALUES ($1,$2,$3) RETURNING id"
+
 	err = db.QueryRow(query, data.Name, data.PhoneNumber, data.Address).Scan(&data.Id)
 	if err != nil {
-		response.Message = "Error"
-		response.Data = err
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		c.JSON(http.StatusBadRequest, Response{Message: "Error", Data: err})
 		return
 	}
-	response.Message = "Success"
-	response.Data = data
-	c.JSON(http.StatusCreated, response)
+
+	c.JSON(http.StatusBadRequest, Response{Message: "Success", Data: data})
 }
 
 func ValidateHp(hp string) error {

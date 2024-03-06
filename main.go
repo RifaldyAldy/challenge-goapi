@@ -3,6 +3,7 @@ package main
 import (
 	"submission-project-enigma-laundry/config"
 	"submission-project-enigma-laundry/controller/customer"
+	"submission-project-enigma-laundry/controller/employee"
 	"submission-project-enigma-laundry/controller/product"
 	transaksidetailscreate "submission-project-enigma-laundry/controller/transaksi_details_create"
 	transaksidetailsget "submission-project-enigma-laundry/controller/transaksi_details_get"
@@ -36,6 +37,12 @@ func main() {
 		transactions.GET("/:id_bill", transaksidetailsget.GetTransaction)
 		transactions.GET("/", transaksidetailsget.GetList)
 		transactions.POST("/", transaksidetailscreate.Create)
+	}
+
+	{
+		employees := r.Group("/employee")
+		employees.POST("/", employee.Create)
+		employees.GET("/", employee.GetList)
 	}
 
 	// r.POST("/products", product.Create)

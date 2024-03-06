@@ -1,6 +1,7 @@
 package customer
 
 import (
+	"database/sql"
 	"net/http"
 	"submission-project-enigma-laundry/config"
 
@@ -14,8 +15,8 @@ func Get(c *gin.Context) {
 	query := "SELECT id,name,phonenumber,address FROM mst_customer WHERE id = $1"
 
 	err := db.QueryRow(query, c.Param("id")).Scan(&data.Id, &data.Name, &data.PhoneNumber, &data.Address)
-	if err != nil {
-		response.Message = "Error"
+	if err == sql.ErrNoRows {
+		response.Message = "Error, tidak ada id " + c.Param("id")
 		response.Data = err
 		c.JSON(http.StatusInternalServerError, response)
 		return

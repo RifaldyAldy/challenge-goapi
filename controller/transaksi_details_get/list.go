@@ -27,7 +27,7 @@ type Transactions struct {
 func GetList(c *gin.Context) {
 	db := config.DB
 	datas := Transaction_list{}
-	billQuery := "SELECT * FROM transaction"
+	billQuery := "SELECT id,billdate,entrydate,finishdate,employeeid,customerid FROM transaction"
 	custQuery := "SELECT name,phonenumber,address FROM mst_customer WHERE id = $1"
 	emplQuery := "SELECT name,phonenumber,address FROM employee WHERE id = $1"
 	billDetails := "SELECT trans.id,trans.productid,trans.quantity,trans.billid,product.name,product.price,product.unit FROM transaction_details AS trans JOIN mst_product AS product ON trans.productid = product.id WHERE trans.billid = $1"

@@ -1,5 +1,3 @@
-CREATE DATABASE submission_goapi;
-
 CREATE TABLE mst_customer (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -9,8 +7,10 @@ CREATE TABLE mst_customer (
 
 CREATE TABLE employee (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
-)
+    name VARCHAR(255) NOT NULL,
+    phonenumber VARCHAR(255) NOT NULL,
+    address VARCHAR(255) NOT NULL
+);
 
 CREATE TABLE mst_product (
     id SERIAL PRIMARY KEY,
@@ -28,14 +28,14 @@ CREATE TABLE transaction (
     customerId int NOT NULL,
     FOREIGN KEY (employeeId) REFERENCES employee(id),
     FOREIGN KEY (customerId) REFERENCES mst_customer(id)
-)
+);
 
 CREATE TABLE transaction_details (
     id SERIAL PRIMARY KEY,
     billId int NOT NULL,
     productId int NOT NULL,
-    quantity int NOT NULL
-    FOREIGN KEY (billId) REFERENCES transaction(id)
+    quantity int NOT NULL,
+    FOREIGN KEY (billId) REFERENCES transaction(id),
     FOREIGN KEY (productId) REFERENCES mst_product(id)
-)
+);
 
